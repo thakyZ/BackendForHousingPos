@@ -4,7 +4,7 @@ $fp = fopen('log.txt','a') or die ("File Fail…");
 $dt = date("Y-m-d h:i:sa");
 fwrite($fp,$dt."\n初始化...\n");
 fclose($fp);
-
+#如果不需要数据库，可以从这里开始删除。
 $dbhost = "localhost";
 $dbuser = ""; #Your Username
 $dbpass = ""; #Your Password
@@ -46,6 +46,7 @@ if ($con->query($sql) === TRUE) {
 }
 
 $con->close();
+#数据库部分到这里结束。
 if(file_exists("map.json")){
     unlink("map.json");
     echo "Deleted map.json\n";

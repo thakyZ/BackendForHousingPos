@@ -16,7 +16,9 @@ $Uploader = $_POST['Uploader'];
 if($Items == "[]" or $Items == "" or is_null($Items)){
     die("Empty…");
 }
+$hash = hash("md5",$Items);
 
+#如果不需要数据库，可以从这里开始删除。
 $dbhost = "localhost";
 $dbuser = ""; #Your Username
 $dbpass = ""; #Your Password
@@ -26,7 +28,6 @@ $con = new mysqli($dbhost, $dbuser, $dbpass, $dbname) or die("Sql Con Fail…");
 
 $con->set_charset('utf8mb4');
 
-$hash = hash("md5",$Items);
 $matchid = $con->query("SELECT hash FROM housing WHERE hash = '".$hash."';");
 if($matchid->fetch_assoc()['hash'] !== null){
     mysqli_close($con);
@@ -35,7 +36,7 @@ if($matchid->fetch_assoc()['hash'] !== null){
 $checkit = "checked";
 $sql=sprintf("INSERT INTO housing (location,size,uploadname,items,tags,uploader,hash,checkit) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",$Location,$Size,$UploadName,$Items,$Tags,$Uploader,$hash,$checkit);
 $result = $con->query($sql);
-
+#数据库部分到这里结束，请将下面的判断语句及 $con->close(); 清除即可开始使用。
 if($result){
     echo "Success!";
     $fp1 = fopen('result/'.$hash.'.json','w') or die ("HashFile Fail…");
