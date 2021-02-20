@@ -41,10 +41,17 @@ if($result){
     $fp1 = fopen('result/'.$hash.'.json','w') or die ("HashFile Fail…");
     fwrite($fp1,$Items);
     fclose($fp1);
-    $fp2 = fopen('map.json','r+') or die ("MapFile Fail…");
-    fseek($fp2,-1,SEEK_END);
-    fwrite($fp2,',{"location": "'.$Location.'","size": "'.$Size.'","hash": "'.$hash.'", "named": "'.$Named.'", "tags": "'.$Tags.'"}]');
-    fclose($fp2);
+    if(file_exists("map.json")){
+        $fp2 = fopen('map.json','r+') or die ("MapFile Fail…");
+        fseek($fp2,-1,SEEK_END);
+        fwrite($fp2,',{"location": "'.$Location.'","size": "'.$Size.'","hash": "'.$hash.'", "named": "'.$Named.'", "tags": "'.$Tags.'"}]');
+        fclose($fp2);
+    }
+    else{
+        $fp2 = fopen('map.json','w') or die ("MapFile Fail…");
+        fwrite($fp2,'[{"location": "'.$Location.'","size": "'.$Size.'","hash": "'.$hash.'", "named": "'.$Named.'", "tags": "'.$Tags.'"}]');
+        fclose($fp2);
+    }
 }
 else{
     echo "INSERT Fail…";

@@ -46,10 +46,6 @@ if ($con->query($sql) === TRUE) {
 
 $con->close();
 
-$fp = fopen('map.json','w') or die ("Map File Fail…");
-fwrite($fp,"[]");
-fclose($fp);
-
 if (mkdir("result") === TRUE) {
     echo "Mkdir successfully";
 } else {
