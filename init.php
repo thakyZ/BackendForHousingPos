@@ -28,12 +28,12 @@ $con->set_charset('utf8mb4');
 $sql = "CREATE TABLE IF NOT EXISTS housing (
     location varchar(20),
     Size char(1),
-    named varchar(255),
+    uploadname varchar(255),
     items json,
-    tags varchar(255),
-    uper varchar(255),
+    tags TEXT,
+    uploader varchar(255),
     likeit int,
-    pics json,
+    pics TEXT,
     hash char(32),
     checkit char(10),
     UNIQUE KEY `id` (`hash`)
@@ -51,8 +51,10 @@ if(file_exists("map.json")){
     echo "Deleted map.json\n";
 }
 
-if(file_exists("result"))
+if(file_exists("result")){
+    echo "请手动清除不需要的存档。\n";
     echo "Init Success!";
+}
 else {
     mkdir("result");
     echo "Init Success!";

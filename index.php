@@ -8,10 +8,10 @@ fclose($fp);
 
 $Location = $_POST['Location'];
 $Size = $_POST['Size'];
-$Named = $_POST['Named'];
+$UploadName = $_POST['UploadName'];
 $Items = json_encode(json_decode($_POST['Items']),JSON_UNESCAPED_UNICODE);
 $Tags = $_POST['Tags'];
-$Uper = $_POST['Uper'];
+$Uploader = $_POST['Uploader'];
 
 if($Items == "[]" or $Items == "" or is_null($Items)){
     die("Empty…");
@@ -33,7 +33,7 @@ if($matchid->fetch_assoc()['hash'] !== null){
     die("Exist…");
 }
 $checkit = "checked";
-$sql=sprintf("INSERT INTO housing (location,size,named,items,tags,uper,hash,checkit) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",$Location,$Size,$Named,$Items,$Tags,$Uper,$hash,$checkit);
+$sql=sprintf("INSERT INTO housing (location,size,uploadname,items,tags,uploader,hash,checkit) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",$Location,$Size,$UploadName,$Items,$Tags,$Uploader,$hash,$checkit);
 $result = $con->query($sql);
 
 if($result){
@@ -42,14 +42,14 @@ if($result){
     fwrite($fp1,$Items);
     fclose($fp1);
     if(file_exists("map.json")){
-        $fp2 = fopen('map.json','r+') or die ("MapFile Fail…");
+        $fp2 = fopen('map.json','r+') or die ("MapFile Add Fail…");
         fseek($fp2,-1,SEEK_END);
-        fwrite($fp2,',{"location": "'.$Location.'","size": "'.$Size.'","hash": "'.$hash.'", "named": "'.$Named.'", "tags": "'.$Tags.'"}]');
+        fwrite($fp2,',{"location": "'.$Location.'","size": "'.$Size.'","hash": "'.$hash.'", "named": "'.$UploadName.'", "tags": "'.$Tags.'"}]');
         fclose($fp2);
     }
     else{
-        $fp2 = fopen('map.json','w') or die ("MapFile Fail…");
-        fwrite($fp2,'[{"location": "'.$Location.'","size": "'.$Size.'","hash": "'.$hash.'", "named": "'.$Named.'", "tags": "'.$Tags.'"}]');
+        $fp2 = fopen('map.json','w') or die ("MapFile Create Fail…");
+        fwrite($fp2,'[{"location": "'.$Location.'","size": "'.$Size.'","hash": "'.$hash.'", "named": "'.$UploadName.'", "tags": "'.$Tags.'"}]');
         fclose($fp2);
     }
 }
