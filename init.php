@@ -13,16 +13,17 @@ $dbname = "ffxiv";
 $con = new mysqli($dbhost, $dbuser, $dbpass) or die("Sql Con Fail…");
 $con->set_charset('utf8mb4');
 
-$sql = "CREATE DATABASE IF NOT EXISTS ".$dbname."DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+$sql = "CREATE DATABASE IF NOT EXISTS ".$dbname." DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
 
 if ($con->query($sql) === TRUE) {
-    echo "Database created successfully";
+    echo "Database created successfully\n";
 } else {
     die("Error creating database: " . $conn->error);
 }
+$con->close();
 
-$sql = "use ".$dbname;
-$con->query($sql);
+$con = new mysqli($dbhost, $dbuser, $dbpass,$dbname) or die("Sql Con Fail…");
+$con->set_charset('utf8mb4');
 
 $sql = "CREATE TABLE IF NOT EXISTS housing (
     location varchar(20),
@@ -39,16 +40,21 @@ $sql = "CREATE TABLE IF NOT EXISTS housing (
     )DEFAULT CHARSET=utf8mb4;";
 
 if ($con->query($sql) === TRUE) {
-    echo "Table created successfully";
+    echo "Table created successfully\n";
 } else {
     die("Error creating Table: " . $conn->error);
 }
 
 $con->close();
+if(file_exists("map.json")){
+    unlink("map.json");
+    echo "Deleted map.json\n";
+}
 
-if (mkdir("result") === TRUE) {
-    echo "Mkdir successfully";
-} else {
-    die("Error Mkdir: result");
+if(file_exists("result"))
+    echo "Init Success!";
+else {
+    mkdir("result");
+    echo "Init Success!";
 }
 ?>
