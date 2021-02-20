@@ -26,8 +26,7 @@ $con = new mysqli($dbhost, $dbuser, $dbpass,$dbname) or die("Sql Con Fail…");
 $con->set_charset('utf8mb4');
 
 $sql = "CREATE TABLE IF NOT EXISTS housing (
-    location varchar(20),
-    Size char(1),
+    location varchar(255),
     uploadname varchar(255),
     items json,
     tags TEXT,

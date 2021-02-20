@@ -7,7 +7,6 @@ fwrite($fp,$dt."\n".$PostData."\n");
 fclose($fp);
 
 $Location = $_POST['Location'];
-$Size = $_POST['Size'];
 $UploadName = $_POST['UploadName'];
 $Items = json_encode(json_decode($_POST['Items']),JSON_UNESCAPED_UNICODE);
 $Tags = $_POST['Tags'];
@@ -34,7 +33,7 @@ if($matchid->fetch_assoc()['hash'] !== null){
     die("Exist…");
 }
 $checkit = "checked";
-$sql=sprintf("INSERT INTO housing (location,size,uploadname,items,tags,uploader,hash,checkit) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",$Location,$Size,$UploadName,$Items,$Tags,$Uploader,$hash,$checkit);
+$sql=sprintf("INSERT INTO housing (location,size,uploadname,items,tags,uploader,hash,checkit) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",$Location,$UploadName,$Items,$Tags,$Uploader,$hash,$checkit);
 $result = $con->query($sql);
 #数据库部分到这里结束，请将下面的判断语句及 $con->close(); 清除即可开始使用。
 if($result){
@@ -45,12 +44,12 @@ if($result){
     if(file_exists("map.json")){
         $fp2 = fopen('map.json','r+') or die ("MapFile Add Fail…");
         fseek($fp2,-1,SEEK_END);
-        fwrite($fp2,',{"location": "'.$Location.'","size": "'.$Size.'", "uploadName": "'.$UploadName.'","hash": "'.$hash.'", "tags": "'.$Tags.'"}]');
+        fwrite($fp2,',{"location": "'.$Location.'", "uploadName": "'.$UploadName.'","hash": "'.$hash.'", "tags": "'.$Tags.'"}]');
         fclose($fp2);
     }
     else{
         $fp2 = fopen('map.json','w') or die ("MapFile Create Fail…");
-        fwrite($fp2,'[{"location": "'.$Location.'","size": "'.$Size.'", "uploadName": "'.$UploadName.'","hash": "'.$hash.'", "tags": "'.$Tags.'"}]');
+        fwrite($fp2,'[{"location": "'.$Location.'", "uploadName": "'.$UploadName.'","hash": "'.$hash.'", "tags": "'.$Tags.'"}]');
         fclose($fp2);
     }
 }
