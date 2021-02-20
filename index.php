@@ -44,12 +44,12 @@ if($result){
     if(file_exists("map.json")){
         $fp2 = fopen('map.json','r+') or die ("MapFile Add Fail…");
         fseek($fp2,-1,SEEK_END);
-        fwrite($fp2,',{"location": "'.$Location.'","size": "'.$Size.'","hash": "'.$hash.'", "named": "'.$UploadName.'", "tags": "'.$Tags.'"}]');
+        fwrite($fp2,',{"location": "'.$Location.'","size": "'.$Size.'", "uploadName": "'.$UploadName.'","hash": "'.$hash.'", "tags": "'.$Tags.'"}]');
         fclose($fp2);
     }
     else{
         $fp2 = fopen('map.json','w') or die ("MapFile Create Fail…");
-        fwrite($fp2,'[{"location": "'.$Location.'","size": "'.$Size.'","hash": "'.$hash.'", "named": "'.$UploadName.'", "tags": "'.$Tags.'"}]');
+        fwrite($fp2,'[{"location": "'.$Location.'","size": "'.$Size.'", "uploadName": "'.$UploadName.'","hash": "'.$hash.'", "tags": "'.$Tags.'"}]');
         fclose($fp2);
     }
 }
