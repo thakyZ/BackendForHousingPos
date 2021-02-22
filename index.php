@@ -1,7 +1,7 @@
 <?php
 header("content-type:application/json;charset=utf-8");
 $PostData = json_encode($_POST,JSON_UNESCAPED_UNICODE);
-$fp = fopen('log.txt','a') or die ("File Fail…");
+$fp = fopen('.log.txt','a') or die ("File Fail…");
 $dt = date("Y-m-d h:i:sa");
 fwrite($fp,$dt."\n".$PostData."\n");
 fclose($fp);
