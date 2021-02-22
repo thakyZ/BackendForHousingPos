@@ -33,7 +33,7 @@ if($matchid->fetch_assoc()['hash'] !== null){
     die("Exist…");
 }
 $checkit = hash('md5',$hash.$UserId);
-$sql=sprintf("INSERT INTO housing (locationId,uploadname,items,tags,uploader,hash,checkit,sec) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s');",$Location,$UploadName,$Items,$Tags,$Uploader,$hash,$checkit);
+$sql=sprintf("INSERT INTO housing (locationId,uploadname,items,tags,uploader,hash,checkit) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s');",$Location,$UploadName,$Items,$Tags,$Uploader,$hash,$checkit);
 $result = $con->query($sql);
 #数据库部分到这里结束,同时要删除下面的判断和最后的关闭连接语句。
 if($result){
