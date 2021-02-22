@@ -35,7 +35,7 @@ $sql = "CREATE TABLE IF NOT EXISTS housing (
     pics TEXT,
     hash char(32),
     checkit char(32),
-    UNIQUE KEY `id` (`hash`),
+    UNIQUE KEY `id` (`hash`)
     )DEFAULT CHARSET=utf8mb4;";
 
 if ($con->query($sql) === TRUE) {
