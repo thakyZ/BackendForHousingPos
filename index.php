@@ -1,17 +1,19 @@
 <?php
 header("content-type:application/json;charset=utf-8");
-$PostData = json_encode($_POST,JSON_UNESCAPED_UNICODE);
+$PostData = file_get_contents('php://input');
+$Data = json_decode($PostData, true);
+//$PostData = json_encode($_POST,JSON_UNESCAPED_UNICODE);
 $fp = fopen('.log.txt','a') or die ("File Fail…");
 $dt = date("Y-m-d h:i:sa");
 fwrite($fp,$dt."\n".$PostData."\n");
 fclose($fp);
 
-$Location = $_POST['LocationId'];
-$UploadName = $_POST['UploadName'];
-$Items = json_encode(json_decode($_POST['Items']),JSON_UNESCAPED_UNICODE);
-$Tags = $_POST['Tags'];
-$Uploader = $_POST['Uploader'];
-$UserId = $_POST['UserId'];
+$Location = $Data['LocationId'];
+$UploadName = $Data['UploadName'];
+$Items = json_encode(json_decode($Data['Items']),JSON_UNESCAPED_UNICODE);
+$Tags = $Data['Tags'];
+$Uploader = $Data['Uploader'];
+$UserId = $Data['UserId'];
 
 if($Items == "[]" or $Items == "null" or is_null($Items)){
     die("Empty…");
