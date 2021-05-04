@@ -1,11 +1,51 @@
 <?php
 header("content-type:application/json;charset=utf-8");
-$PostData = file_get_contents('php://input');
-$Data = json_decode($PostData, true);
-//$PostData = json_encode($_POST,JSON_UNESCAPED_UNICODE);
+header("Access-Control-Allow-Headers:x-requested-with,content-type");
+function initPostData(){
+    $data = array();
+    if(!empty($_GET)){
+        $data = array_merge($data,$_GET);
+        return $data;
+    }
+    if(!empty($_POST) && $_SERVER["CONTENT_TYPE"]!='application/json'){
+        $data = array_merge($data,$_POST);
+        return $data;
+    }
+    $content = file_get_contents('php://input');
+
+    /*switch (json_last_error()) {
+        case JSON_ERROR_NONE:
+            echo ' - No errors';
+        break;
+        case JSON_ERROR_DEPTH:
+            echo ' - Maximum stack depth exceeded';
+        break;
+        case JSON_ERROR_STATE_MISMATCH:
+            echo ' - Underflow or the modes mismatch';
+        break;
+        case JSON_ERROR_CTRL_CHAR:
+            echo ' - Unexpected control character found';
+        break;
+        case JSON_ERROR_SYNTAX:
+            echo ' - Syntax error, malformed JSON';
+        break;
+        case JSON_ERROR_UTF8:
+            echo ' - Malformed UTF-8 characters, possibly incorrectly encoded';
+        break;
+        default:
+            echo ' - Unknown error';
+        break;
+    }*/
+    $data = array_merge($data,json_decode($content, true));
+    return $data;
+}
+$Data = initPostData();
+if(empty($Data)){
+    die("Empty!");
+}
 $fp = fopen('.log.txt','a') or die ("File Fail…");
 $dt = date("Y-m-d h:i:sa");
-fwrite($fp,$dt."\n".$PostData."\n");
+fwrite($fp,$dt."\n".json_encode($Data,JSON_UNESCAPED_UNICODE)."\n");
 fclose($fp);
 
 $Location = $Data['LocationId'];
@@ -38,6 +78,7 @@ $checkit = hash('md5',$hash.$UserId);
 $sql_insert=$con->prepare("INSERT INTO housing (locationId,uploadname,items,tags,uploader,hash,checkit) VALUES (?, ?, ?, ?, ?, ?, ?)");
 $sql_insert->bind_param("sssssss",$Location,$UploadName,$Items,$Tags,$Uploader,$hash,$checkit);
 $result = $sql_insert->execute();
+$sql_insert->close();
 #数据库部分到这里结束,同时要删除下面的判断和最后的关闭连接语句。
 if($result){
     echo "Success!";
